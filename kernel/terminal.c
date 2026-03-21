@@ -9,21 +9,22 @@ extern int8_t head, tail;
 
 // Вспомогательная функция для вывода приглашения
 void print_prompt(void) {
-    print_at("root@lolipop# ", 0, cursor_y, 0x4);
+    print_at("root@lolipop# ", 0, cursor_y, 0x1);
     cursor_x = 14;      // длина приглашения (подсчитано)
 }
 
 void execute_command(const char *command) {
+    char available_commands[] = {'help', 'clear'};
     if (strcmp(command, "help") == 0) {
-        print_at("Available commands: help, clear, calc", 0, cursor_y+1, 0x2);
+        print_at("Available commands: help, clear", 0, cursor_y+1, 0x2);
         cursor_y++;
     } else if (strcmp(command, "clear") == 0) {
         clear_screen(0x0F);
         cursor_x = 0;
         cursor_y = 0;
         cursor_y--;
-    } else if (command != "help" || "clear")  {
-        print_at("Unknown command", 0, cursor_y+1, 0x00);
+    } else if (strcmp(command, available_commands) == 1 || -1) {
+        print_at("Invalid or unknown command!", 0, cursor_y+1, 0x4);
         cursor_y++;
     }
 }
@@ -39,7 +40,6 @@ void terminal_init(void) {
 
             if (c == '\n') {         // Enter
                 cmd[pos] = '\0';     // завершаем строку
-                cursor_y++;           // переходим на новую строку для вывода результата
                 execute_command(cmd);
                 // после выполнения снова выводим приглашение
                 cursor_y++;           // пропускаем строку
