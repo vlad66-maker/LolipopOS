@@ -2,6 +2,7 @@
 
 #define VIDEO ((char*)0xB8000)
 
+
 void print_at(const char *str, int x, int y, uint8_t color) {
     char *video = VIDEO;
     int offset = (y * 80 + x) * 2;
@@ -11,11 +12,11 @@ void print_at(const char *str, int x, int y, uint8_t color) {
     }
 }
 
-void put_char(char c, int x, int y) {
+void put_char(char c, int x, int y, int8_t color) {
     char *video = VIDEO;
     int offset = (y * 80 + x) * 2;
     video[offset] = c;
-    video[offset + 1] = 0x0F;
+    video[offset + 1] = color;
 }
 
 uint8_t inb(uint16_t port) {
@@ -52,8 +53,15 @@ int8_t strcmp(const char *str1, const char *str2) {
 }
 
 void clear_screen(uint8_t color) {
-    for (int i = 0; i <= 80*25; i++) {
+    for (int i = 0; i < 80*25; i++) {
+        hlt(1);
         VIDEO[i * 2]     = ' '  ; 
         VIDEO[i * 2 + 1] = color;
+    }
+}
+
+void hlt(uint32_t ms) {
+    for (volatile uint32_t i = 0; i < ms * 1000; i++) {
+        __asm__ volatile ("nop"); // Команда "ничего не делать"
     }
 }
