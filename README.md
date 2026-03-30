@@ -1,4 +1,4 @@
-# LolipopOS v0.0.2
+# LolipopOS v0.0.2.1
 LolipopOS is education project
 
 RU:
