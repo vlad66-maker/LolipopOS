@@ -12,5 +12,7 @@ int8_t   strcmp(const char *str1, const char *str2)            ;
 void     clear_screen(uint8_t color)                           ;
 uint32_t strlen(const char *str)                               ;
 void     hlt(uint32_t ms)                                      ;
+void     shutdown()                                            ;
+void     reboot()                                              ;
 
 #endif
