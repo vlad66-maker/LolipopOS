@@ -63,5 +63,3 @@ void clear_screen(uint8_t color) {
         VIDEO[i * 2 + 1] = color;
     }
 }
-
-v
