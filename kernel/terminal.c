@@ -44,7 +44,7 @@ void execute_command(const char *command) {
         if (cursor_y >= 25) {
             scroll();
         } 
-        char help_msg[] = {'A','v','a','i','l','a','b','l','e',' ','c','o','m','m','a','n','d','s',':',' ','h','e','l','p',',','c','l','e','a','r',',','c','a','l','c'};
+	char help_msg[] = {'A','v','a','i','l','a','b','l','e',' ','c','o','m','m','a','n','d','s',':',' ','h','e','l','p',',','c','l','e','a','r',',','c','a','l','c',',','r','e','b','o','o','t',',','s','h','u','t','d','o','w','n'};
         for (char i = 0; help_msg[i] != '\0'; i++) {
             hlt(20);
             put_char(help_msg[i], cursor_x, cursor_y, 0x0A);
@@ -151,10 +151,16 @@ void execute_command(const char *command) {
         // Смещаем курсор вниз, чтобы следующая команда не налезла на лого
         cursor_y += 10;
             
+    } else if (strcmp(command, "shutdown") == 0) {
+    	shutdown();
+    } else if (strcmp(command, "reboot") == 0) {
+    	reboot();
     } else if (
-        strcmp(command, "help") != 0 ||
-        strcmp(command, "clear") != 0 ||                                                                         
-        strcmp(command, "fastfetch") != 0)  {
+        strcmp(command, "help") != 0 &&
+        strcmp(command, "clear") != 0 &&                                                                         
+        strcmp(command, "fastfetch") != 0 &&
+	strcmp(command, "shutdown") != 0 &&
+	strcmp(command, "reboot") != 0)  {
         if (cursor_y >= 25) {
             scroll();
         } 
@@ -176,14 +182,14 @@ void terminal_init(void) {
 
                 cmd[pos] = '\0';
 
-                cursor_x = 0;   // 🔥 ВАЖНО
+                cursor_x = 0;   
                 cursor_y++;
 
                 execute_command(cmd);
 
                 if (cursor_y >= 25) { scroll(); }
 
-                cursor_x = 0;   // 🔥 ВАЖНО
+                cursor_x = 0;   
                 cursor_y++;
 
                 if (cursor_y >= VGA_HEIGHT) {
